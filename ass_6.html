@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singleton Example - Banking App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    p {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏦 Banking App (Singleton Demo)</h1>
+  <div class="container">
+    <button onclick="connectToDB()">Connect to Database</button>
+    <button onclick="runQuery()">Run Query</button>
+    <p id="output"></p>
+  </div>
+
+  <script>
+    // -------- Singleton Pattern --------
+    const Database = (function () {
+      let instance; // only one instance allowed
+
+      function createInstance() {
+        return {
+          connect: function () {
+            return "✅ Database connection established!";
+          },
+          query: function (sql) {
+            return "Running SQL: " + sql;
+          }
+        };
+      }
+
+      return {
+        getInstance: function () {
+          if (!instance) {
+            instance = createInstance();
+            console.log("New DB instance created.");
+          } else {
+            console.log("Reusing existing DB instance.");
+          }
+          return instance;
+        }
+      };
+    })();
+
+    // -------- Client Code --------
+    function connectToDB() {
+      const db = Database.getInstance();
+      document.getElementById("output").textContent = db.connect();
+    }
+
+    function runQuery() {
+      const db = Database.getInstance();
+      document.getElementById("output").textContent = db.query("SELECT * FROM accounts");
+    }
+  </script>
+</body>
+</html>
